@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot name="rover" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Base -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.6 0.4 0.15"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Wheels -->
+  <!-- Left side -->
+  <link name="front_left_wheel"><visual><geometry><cylinder radius="0.08" length="0.06"/></geometry></visual></link>
+  <link name="mid_left_wheel"><visual><geometry><cylinder radius="0.08" length="0.06"/></geometry></visual></link>
+  <link name="rear_left_wheel"><visual><geometry><cylinder radius="0.08" length="0.06"/></geometry></visual></link>
+
+  <!-- Right side -->
+  <link name="front_right_wheel"><visual><geometry><cylinder radius="0.08" length="0.06"/></geometry></visual></link>
+  <link name="mid_right_wheel"><visual><geometry><cylinder radius="0.08" length="0.06"/></geometry></visual></link>
+  <link name="rear_right_wheel"><visual><geometry><cylinder radius="0.08" length="0.06"/></geometry></visual></link>
+
+  <!-- Joints -->
+
+  <!-- Left wheels -->
+  <joint name="fl_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_left_wheel"/>
+    <origin xyz="0.25 0.2 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="ml_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="mid_left_wheel"/>
+    <origin xyz="0 0.2 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="rl_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_left_wheel"/>
+    <origin xyz="-0.25 0.2 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Right wheels -->
+  <joint name="fr_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_right_wheel"/>
+    <origin xyz="0.25 -0.2 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="mr_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="mid_right_wheel"/>
+    <origin xyz="0 -0.2 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="rr_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_right_wheel"/>
+    <origin xyz="-0.25 -0.2 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+</robot>
