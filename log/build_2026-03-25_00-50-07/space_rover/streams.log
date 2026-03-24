@@ -1,0 +1,23 @@
+[1.591s] Invoking command in '/home/pes2ug23cs377/space-rover/build/space_rover': PYTHONPATH=/home/pes2ug23cs377/space-rover/build/space_rover/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pes2ug23cs377/space-rover/install/space_rover/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pes2ug23cs377/space-rover/build/space_rover/build --no-deps symlink_data
+[1.881s] running develop
+[2.078s] running egg_info
+[2.078s] creating space_rover.egg-info
+[2.078s] writing space_rover.egg-info/PKG-INFO
+[2.079s] writing dependency_links to space_rover.egg-info/dependency_links.txt
+[2.080s] writing entry points to space_rover.egg-info/entry_points.txt
+[2.080s] writing requirements to space_rover.egg-info/requires.txt
+[2.080s] writing top-level names to space_rover.egg-info/top_level.txt
+[2.080s] writing manifest file 'space_rover.egg-info/SOURCES.txt'
+[2.082s] reading manifest file 'space_rover.egg-info/SOURCES.txt'
+[2.083s] writing manifest file 'space_rover.egg-info/SOURCES.txt'
+[2.086s] running build_ext
+[2.086s] Creating /home/pes2ug23cs377/space-rover/install/space_rover/lib/python3.10/site-packages/space-rover.egg-link (link to .)
+[2.086s] 
+[2.086s] Installed /home/pes2ug23cs377/space-rover/build/space_rover
+[2.086s] running symlink_data
+[2.086s] creating /home/pes2ug23cs377/space-rover/install/space_rover/share/ament_index
+[2.087s] creating /home/pes2ug23cs377/space-rover/install/space_rover/share/ament_index/resource_index
+[2.087s] creating /home/pes2ug23cs377/space-rover/install/space_rover/share/ament_index/resource_index/packages
+[2.087s] symbolically linking /home/pes2ug23cs377/space-rover/build/space_rover/resource/space_rover -> /home/pes2ug23cs377/space-rover/install/space_rover/share/ament_index/resource_index/packages
+[2.087s] symbolically linking /home/pes2ug23cs377/space-rover/build/space_rover/package.xml -> /home/pes2ug23cs377/space-rover/install/space_rover/share/space_rover
+[2.123s] Invoked command in '/home/pes2ug23cs377/space-rover/build/space_rover' returned '0': PYTHONPATH=/home/pes2ug23cs377/space-rover/build/space_rover/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pes2ug23cs377/space-rover/install/space_rover/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pes2ug23cs377/space-rover/build/space_rover/build --no-deps symlink_data

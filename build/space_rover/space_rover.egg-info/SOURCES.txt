@@ -1,0 +1,12 @@
+package.xml
+setup.cfg
+setup.py
+resource/space_rover
+space_rover/__init__.py
+space_rover.egg-info/PKG-INFO
+space_rover.egg-info/SOURCES.txt
+space_rover.egg-info/dependency_links.txt
+space_rover.egg-info/entry_points.txt
+space_rover.egg-info/requires.txt
+space_rover.egg-info/top_level.txt
+space_rover.egg-info/zip-safe
