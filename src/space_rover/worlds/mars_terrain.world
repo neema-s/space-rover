@@ -1,0 +1,28 @@
+<sdf version="1.6">
+  <world name="mars_world">
+
+    <gravity>0 0 -3.72</gravity>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Rocks -->
+    <model name="rock1">
+      <pose>2 2 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
