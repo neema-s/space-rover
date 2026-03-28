@@ -16,6 +16,7 @@ def generate_launch_description():
 
     return LaunchDescription([
 
+        # 🌍 Launch Gazebo
         ExecuteProcess(
             cmd=[
                 'gazebo',
@@ -26,6 +27,7 @@ def generate_launch_description():
             output='screen'
         ),
 
+        # 🤖 Robot state publisher
         Node(
             package="robot_state_publisher",
             executable="robot_state_publisher",
@@ -34,6 +36,7 @@ def generate_launch_description():
             }]
         ),
 
+        # 🚀 Spawn rover
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
@@ -45,5 +48,35 @@ def generate_launch_description():
                 '-z', '0.5'
             ],
             output='screen'
-        )
+        ),
+
+        # 🔵 P2 NODES (ADD THESE)
+
+        Node(
+            package='space_rover',
+            executable='lidar_node',
+            name='lidar_node',
+            output='screen'
+        ),
+
+        Node(
+            package='space_rover',
+            executable='camera_node',
+            name='camera_node',
+            output='screen'
+        ),
+
+        Node(
+            package='space_rover',
+            executable='imu_node',
+            name='imu_node',
+            output='screen'
+        ),
+
+        Node(
+            package='space_rover',
+            executable='estop_node',
+            name='estop_node',
+            output='screen'
+        ),
     ])
