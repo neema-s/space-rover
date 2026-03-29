@@ -2,3 +2,25 @@ build/
 install/
 log/
 __pycache__/
+# ROS / colcon build artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# backups and editor files
+*.bak
+*~
+*.swp
+
+# IDE
+.vscode/
+.idea/
+
+# distribution
+dist/

@@ -3,10 +3,24 @@
 <package format="3">
   <name>space_rover</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="pes2ug23cs377@todo.todo">pes2ug23cs377</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Space Rover ROS2 Package</description>
 
+  <maintainer email="pes2ug23cs377@todo.todo">pes2ug23cs377</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- Build system -->
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- REQUIRED DEPENDENCIES -->
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>tf2_ros</depend>
+
+  <!-- Testing -->
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
