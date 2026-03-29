@@ -1,37 +1,39 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Imu
-import random
+
 
 class ImuNode(Node):
     def __init__(self):
         super().__init__('imu_node')
 
-        self.pub = self.create_publisher(Imu, '/imu/data', 10)
-        self.timer = self.create_timer(0.1, self.publish_imu)
+        # Subscribe to IMU data published by Gazebo plugin
+        self.sub = self.create_subscription(
+            Imu,
+            '/imu/data',
+            self.callback,
+            10
+        )
+        # Also subscribe to the plugin's raw topic in case remapping isn't applied
+        self.sub_raw = self.create_subscription(
+            Imu,
+            '/imu/gazebo_ros_imu/out',
+            self.callback,
+            10
+        )
 
-        self.get_logger().info("IMU Node Started")
+        # Optional processed IMU topic
+        self.pub = self.create_publisher(Imu, '/imu/processed', 10)
 
-    def publish_imu(self):
-        msg = Imu()
+        self.get_logger().info("IMU Node Started (listening on /imu/data and /imu/gazebo_ros_imu/out)")
 
-        msg.header.frame_id = "imu_link"
-        msg.header.stamp = self.get_clock().now().to_msg()
+    def callback(self, msg: Imu):
+        # For now, simply forward received IMU messages to /imu/processed
+        try:
+            self.pub.publish(msg)
+        except Exception as e:
+            self.get_logger().error(f"Failed to republish IMU message: {e}")
 
-        # Fake orientation
-        msg.orientation.w = 1.0
-
-        # Fake angular velocity
-        msg.angular_velocity.x = random.uniform(-0.1, 0.1)
-        msg.angular_velocity.y = random.uniform(-0.1, 0.1)
-        msg.angular_velocity.z = random.uniform(-0.1, 0.1)
-
-        # Fake linear acceleration
-        msg.linear_acceleration.x = random.uniform(-0.5, 0.5)
-        msg.linear_acceleration.y = random.uniform(-0.5, 0.5)
-        msg.linear_acceleration.z = random.uniform(-0.5, 0.5)
-
-        self.pub.publish(msg)
 
 def main(args=None):
     rclpy.init(args=args)

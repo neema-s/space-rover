@@ -61,7 +61,7 @@
 
       <plugin name="gazebo_ros_camera" filename="libgazebo_ros_camera.so">
         <ros>
-          <namespace>/camera/camera_sensor</namespace>
+          <namespace>/camera</namespace>
           <remapping>image_raw:=image_raw</remapping>
         </ros>
       </plugin>
@@ -92,11 +92,27 @@
       <plugin name="gazebo_ros_lidar" filename="libgazebo_ros_ray_sensor.so">
         <ros>
           <namespace>/</namespace>
-          <remapping>scan:=scan</remapping>
+          <remapping>out:=scan</remapping>
         </ros>
       </plugin>
 
     </sensor>
   </gazebo>
+
+    <!-- ================= IMU SENSOR ================= -->
+
+    <gazebo reference="base_link">
+      <sensor type="imu" name="imu_sensor">
+        <update_rate>50</update_rate>
+
+        <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>/imu</namespace>
+            <remapping>out:=data</remapping>
+          </ros>
+        </plugin>
+
+      </sensor>
+    </gazebo>
 
 </robot>
