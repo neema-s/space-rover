@@ -114,5 +114,30 @@
 
       </sensor>
     </gazebo>
+    
+  <!-- ================= DIFF DRIVE CONTROLLER (FIXED) ================= -->
+<gazebo>
+  <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+    <ros>
+      <namespace>/</namespace>
+    </ros>
+
+    <left_joint>mid_left_wheel_joint</left_joint>
+    <right_joint>mid_right_wheel_joint</right_joint>
+
+    <wheel_separation>0.5</wheel_separation>
+
+    <!-- USE diameter instead -->
+    <wheel_diameter>0.24</wheel_diameter>
+
+    <publish_odom>true</publish_odom>
+    <publish_odom_tf>true</publish_odom_tf>
+
+    <command_topic>/cmd_vel</command_topic>
+    <odometry_topic>/odom</odometry_topic>
+
+  </plugin>
+</gazebo>
 
 </robot>

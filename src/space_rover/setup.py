@@ -35,6 +35,8 @@ setup(
     entry_points={
         'console_scripts': [
             'nav_node = space_rover.navigation.nav_node:main',
+            'obstacle_avoidance = space_rover.navigation.obstacle_avoidance:main',
+    	    'watchdog_node = space_rover.navigation.watchdog_node:main',
             'lidar_node = space_rover.sensors.lidar_node:main',
             'camera_node = space_rover.sensors.camera_node:main',
             'imu_node = space_rover.sensors.imu_node:main',
