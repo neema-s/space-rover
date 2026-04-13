@@ -45,6 +45,7 @@
   <gazebo reference="camera_link">
     <sensor type="camera" name="camera_sensor">
       <update_rate>10</update_rate>
+      <always_on>true</always_on>
 
       <camera>
         <horizontal_fov>1.047</horizontal_fov>
@@ -74,6 +75,7 @@
   <gazebo reference="lidar_link">
     <sensor type="ray" name="lidar_sensor">
       <update_rate>10</update_rate>
+      <always_on>true</always_on>
 
       <ray>
         <scan>
@@ -94,6 +96,8 @@
           <namespace>/</namespace>
           <remapping>out:=scan</remapping>
         </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_link</frame_name>
       </plugin>
 
     </sensor>
@@ -104,6 +108,7 @@
     <gazebo reference="base_link">
       <sensor type="imu" name="imu_sensor">
         <update_rate>50</update_rate>
+        <always_on>true</always_on>
 
         <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu_sensor.so">
           <ros>
