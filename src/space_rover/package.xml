@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>Space Rover ROS2 Package</description>
 
-  <maintainer email="pes2ug23cs377@todo.todo">pes2ug23cs377</maintainer>
+  <maintainer email="pes2ug23cs377@gmail.com">pes2ug23cs377</maintainer>
   <license>Apache-2.0</license>
 
   <!-- Build system -->

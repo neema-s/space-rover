@@ -2,7 +2,23 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, PoseStamped
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Bool
 import math
+
+
+def normalize_angle(angle):
+    while angle > math.pi:
+        angle -= 2.0 * math.pi
+    while angle < -math.pi:
+        angle += 2.0 * math.pi
+    return angle
+
+
+def yaw_from_quaternion(q):
+    siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
+    cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
+    return math.atan2(siny_cosp, cosy_cosp)
+
 
 class NavNode(Node):
     def __init__(self):
@@ -24,8 +40,16 @@ class NavNode(Node):
             10
         )
 
+        self.obstacle_sub = self.create_subscription(
+            Bool,
+            '/obstacle_detected',
+            self.obstacle_callback,
+            10
+        )
+
         self.goal = None
         self.current_pose = None
+        self.obstacle_detected = False
 
         self.timer = self.create_timer(0.1, self.navigate)
 
@@ -38,14 +62,21 @@ class NavNode(Node):
     def odom_callback(self, msg):
         self.current_pose = msg.pose.pose
 
+    def obstacle_callback(self, msg):
+        self.obstacle_detected = msg.data
+
     def navigate(self):
         if self.goal is None or self.current_pose is None:
+            return
+
+        if self.obstacle_detected:
+            # Let obstacle handler own /cmd_vel while hazard is active.
             return
 
         dx = self.goal.position.x - self.current_pose.position.x
         dy = self.goal.position.y - self.current_pose.position.y
 
-        distance = math.sqrt(dx*dx + dy*dy)
+        distance = math.sqrt(dx * dx + dy * dy)
 
         if distance < 0.3:
             self.get_logger().info("Goal reached!")
@@ -54,10 +85,17 @@ class NavNode(Node):
             return
 
         angle_to_goal = math.atan2(dy, dx)
+        current_yaw = yaw_from_quaternion(self.current_pose.orientation)
+        heading_error = normalize_angle(angle_to_goal - current_yaw)
 
         twist = Twist()
-        twist.linear.x = 0.5
-        twist.angular.z = angle_to_goal * 0.5
+        twist.angular.z = max(-0.8, min(0.8, 1.2 * heading_error))
+
+        # Slow down while turning hard so rover does not skid into terrain edges.
+        if abs(heading_error) > 0.6:
+            twist.linear.x = 0.12
+        else:
+            twist.linear.x = min(0.45, 0.2 + 0.15 * distance)
 
         self.cmd_pub.publish(twist)
 

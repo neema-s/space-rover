@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Imu
 
 
@@ -13,10 +14,10 @@ class ImuNode(Node):
             Imu,
             '/imu/gazebo_ros_imu/out',
             self.callback,
-            10
+            qos_profile_sensor_data
         )
 
-        self.pub = self.create_publisher(Imu, '/imu/data', 10)
+        self.pub = self.create_publisher(Imu, '/imu/data', qos_profile_sensor_data)
 
         self.get_logger().info("IMU Node Started (listening on /imu/gazebo_ros_imu/out, publishing /imu/data)")
 

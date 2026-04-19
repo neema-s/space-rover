@@ -1,2 +1,141 @@
 <!DOCTYPE html>
-<html><body><h1>Space Rover Dashboard</h1></body></html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Space Rover Dashboard</title>
+	<style>
+		:root {
+			--bg: #0b1016;
+			--panel: #121926;
+			--panel-alt: #182233;
+			--text: #eef3fb;
+			--muted: #90a1b8;
+			--accent: #f5a524;
+			--good: #2fd67b;
+			--warn: #ffb020;
+			--bad: #ff5c6c;
+		}
+		* { box-sizing: border-box; }
+		body {
+			margin: 0;
+			font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+			background:
+				radial-gradient(circle at top left, rgba(245,164,36,0.12), transparent 28%),
+				radial-gradient(circle at bottom right, rgba(90,169,255,0.12), transparent 26%),
+				var(--bg);
+			color: var(--text);
+			min-height: 100vh;
+			padding: 24px;
+		}
+		.shell { max-width: 1440px; margin: 0 auto; }
+		.hero {
+			display: flex; justify-content: space-between; align-items: end; gap: 16px;
+			margin-bottom: 18px;
+		}
+		h1 { margin: 0; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: -0.03em; }
+		.subtitle { color: var(--muted); max-width: 700px; line-height: 1.5; }
+		.grid {
+			display: grid;
+			grid-template-columns: 1.6fr 1fr;
+			gap: 16px;
+		}
+		.panel {
+			background: rgba(18,25,38,0.92);
+			border: 1px solid rgba(149,164,186,0.18);
+			border-radius: 22px;
+			box-shadow: 0 18px 60px rgba(0,0,0,0.28);
+			overflow: hidden;
+		}
+		.panel h2 {
+			margin: 0;
+			padding: 18px 18px 10px;
+			font-size: 1rem;
+			color: var(--muted);
+			text-transform: uppercase;
+			letter-spacing: 0.14em;
+		}
+		.viewport {
+			min-height: 380px;
+			background: linear-gradient(145deg, rgba(245,164,36,0.08), rgba(90,169,255,0.05));
+			border-top: 1px solid rgba(149,164,186,0.12);
+			display: grid;
+			place-items: center;
+			padding: 20px;
+			text-align: center;
+		}
+		.mock-screen {
+			border: 1px dashed rgba(245,164,36,0.35);
+			border-radius: 18px;
+			width: min(100%, 680px);
+			padding: 22px;
+			background: rgba(11,16,22,0.55);
+		}
+		.tiles {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 12px;
+			padding: 0 18px 18px;
+		}
+		.tile {
+			background: var(--panel-alt);
+			border-radius: 16px;
+			padding: 16px;
+			min-height: 120px;
+			border: 1px solid rgba(149,164,186,0.12);
+		}
+		.tile b { display: block; margin-bottom: 8px; }
+		.badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			border-radius: 999px;
+			padding: 8px 14px;
+			background: rgba(245,164,36,0.14);
+			color: var(--accent);
+			font-weight: 700;
+		}
+		.badge.good { background: rgba(47,214,123,0.14); color: var(--good); }
+		.badge.bad { background: rgba(255,92,108,0.14); color: var(--bad); }
+		@media (max-width: 980px) {
+			.grid { grid-template-columns: 1fr; }
+		}
+	</style>
+</head>
+<body>
+	<div class="shell">
+		<div class="hero">
+			<div>
+				<h1>Space Rover Dashboard</h1>
+				<p class="subtitle">A control-room style interface for rover telemetry, status, and mission monitoring. The live ROS2 dashboard is implemented in Python; this page is the polished web fallback.</p>
+			</div>
+			<div class="badge">LIVE ROS2 READY</div>
+		</div>
+
+		<div class="grid">
+			<section class="panel">
+				<h2>Camera / LIDAR / Mission View</h2>
+				<div class="viewport">
+					<div class="mock-screen">
+						<h3>Live panels</h3>
+						<p>Camera feed, LIDAR polar plot, rover status, terrain badge, speed slider, and emergency stop controls.</p>
+						<p class="badge good">MOVING</p>
+						<p class="badge">ROCKY</p>
+						<p class="badge bad">ESTOP</p>
+					</div>
+				</div>
+			</section>
+
+			<aside class="panel">
+				<h2>Controls</h2>
+				<div class="tiles">
+					<div class="tile"><b>Speed</b><span>0.0 - 1.0 m/s slider</span></div>
+					<div class="tile"><b>Drive</b><span>Forward, Back, Left, Right, Stop buttons</span></div>
+					<div class="tile"><b>Safety</b><span>EMERGENCY STOP and RESUME</span></div>
+					<div class="tile"><b>Mission</b><span>Timer, waypoint counter, and logger</span></div>
+				</div>
+			</aside>
+		</div>
+	</div>
+</body>
+</html>

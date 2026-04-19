@@ -27,8 +27,8 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
 
-    maintainer='your_name',
-    maintainer_email='your_email',
+    maintainer='pes2ug23cs377',
+    maintainer_email='pes2ug23cs377@gmail.com',
     description='Space Rover',
     license='Apache License 2.0',
 
@@ -41,6 +41,7 @@ setup(
             'camera_node = space_rover.sensors.camera_node:main',
             'imu_node = space_rover.sensors.imu_node:main',
             'estop_node = space_rover.sensors.estop_node:main',
+            'terrain_classifier = space_rover.sensors.terrain_classifier:main',
             'dashboard = space_rover.dashboard:main',
             'mission_logger = space_rover.mission_logger:main',
             'estop_widget = space_rover.estop_widget:main',

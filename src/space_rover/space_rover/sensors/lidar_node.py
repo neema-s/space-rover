@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 
 
@@ -13,10 +14,10 @@ class LidarNode(Node):
             LaserScan,
             '/gazebo_ros_lidar/out',
             self.callback,
-            10
+            qos_profile_sensor_data
         )
 
-        self.pub = self.create_publisher(LaserScan, '/scan', 10)
+        self.pub = self.create_publisher(LaserScan, '/scan', qos_profile_sensor_data)
 
         self.get_logger().info('LIDAR Node Started (listening on /gazebo_ros_lidar/out, publishing /scan)')
 
