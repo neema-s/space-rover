@@ -1,15 +1,30 @@
 <sdf version="1.6">
+
+  <!-- Define the simulation world -->
   <world name="mars_world">
+
+    <!-- Mars gravity (downward along Z-axis) -->
     <gravity>0 0 -3.72</gravity>
 
+    <!-- Add default sun light source -->
     <include>
       <uri>model://sun</uri>
     </include>
 
+
+    <!-- ================= SCENE SETTINGS ================= -->
     <scene>
+
+      <!-- Ambient lighting (reddish Mars tone) -->
       <ambient>0.26 0.15 0.12 1</ambient>
+
+      <!-- Background color -->
       <background>0.18 0.11 0.09 1</background>
+
+      <!-- Enable shadows -->
       <shadows>true</shadows>
+
+      <!-- Fog to simulate dust atmosphere -->
       <fog>
         <type>linear</type>
         <color>0.30 0.18 0.14 1</color>
@@ -17,27 +32,49 @@
         <end>42.0</end>
         <density>0.01</density>
       </fog>
+
+      <!-- Disable clouds -->
       <sky>
         <clouds>false</clouds>
       </sky>
     </scene>
 
+
+    <!-- ================= PHYSICS ENGINE ================= -->
     <physics name="mars_physics" type="ode">
+
+      <!-- Run simulation in real-time -->
       <real_time_factor>1.0</real_time_factor>
+
+      <!-- Small step size for accuracy -->
       <max_step_size>0.001</max_step_size>
+
+      <!-- Update frequency -->
       <real_time_update_rate>1000</real_time_update_rate>
     </physics>
 
+
+    <!-- ================= BASE TERRAIN ================= -->
     <model name="mars_terrain_base">
+
+      <!-- Static = does not move -->
       <static>true</static>
+
+      <!-- Slightly below origin -->
       <pose>0 0 -0.08 0 0 0</pose>
+
       <link name="terrain_link">
+
+        <!-- Collision shape (physics) -->
         <collision name="collision">
           <geometry>
             <box>
+              <!-- 90m x 90m ground -->
               <size>90 90 0.12</size>
             </box>
           </geometry>
+
+          <!-- Friction properties -->
           <surface>
             <friction>
               <ode>
@@ -47,333 +84,152 @@
             </friction>
           </surface>
         </collision>
+
+        <!-- Visual appearance -->
         <visual name="visual">
           <geometry>
             <box>
               <size>90 90 0.12</size>
             </box>
           </geometry>
+
+          <!-- Mars-like brown color -->
           <material>
             <ambient>0.34 0.18 0.12 1</ambient>
             <diffuse>0.52 0.27 0.18 1</diffuse>
-            <specular>0.02 0.02 0.02 1</specular>
           </material>
+        </visual>
+
+      </link>
+    </model>
+
+
+    <!-- ================= DUNE MOUNDS ================= -->
+
+    <!-- Large spherical terrain bumps (hills) -->
+    <model name="dune_mound_01">
+      <static>true</static>
+      <pose>-11 7 -7.9 0 0 0</pose>
+
+      <link name="link">
+        <!-- Sphere used to create curved hill -->
+        <collision name="c">
+          <geometry><sphere><radius>8.2</radius></sphere></geometry>
+        </collision>
+
+        <visual name="v">
+          <geometry><sphere><radius>8.2</radius></sphere></geometry>
+          <material><diffuse>0.56 0.31 0.21 1</diffuse></material>
         </visual>
       </link>
     </model>
 
-    <model name="dune_mound_01">
-      <static>true</static>
-      <pose>-11 7 -7.9 0 0 0</pose>
-      <link name="link">
-        <collision name="c"><geometry><sphere><radius>8.2</radius></sphere></geometry></collision>
-        <visual name="v"><geometry><sphere><radius>8.2</radius></sphere></geometry><material><diffuse>0.56 0.31 0.21 1</diffuse></material></visual>
-      </link>
-    </model>
 
-    <model name="dune_mound_02">
-      <static>true</static>
-      <pose>13 -6 -8.5 0 0 0</pose>
-      <link name="link">
-        <collision name="c"><geometry><sphere><radius>8.9</radius></sphere></geometry></collision>
-        <visual name="v"><geometry><sphere><radius>8.9</radius></sphere></geometry><material><diffuse>0.54 0.29 0.19 1</diffuse></material></visual>
-      </link>
-    </model>
+    <!-- ================= LIGHTING ================= -->
 
-    <model name="dune_mound_03">
-      <static>true</static>
-      <pose>1 16 -9.7 0 0 0</pose>
-      <link name="link">
-        <collision name="c"><geometry><sphere><radius>10.0</radius></sphere></geometry></collision>
-        <visual name="v"><geometry><sphere><radius>10.0</radius></sphere></geometry><material><diffuse>0.51 0.26 0.17 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <model name="dune_mound_04">
-      <static>true</static>
-      <pose>-18 -12 -8.7 0 0 0</pose>
-      <link name="link">
-        <collision name="c"><geometry><sphere><radius>9.2</radius></sphere></geometry></collision>
-        <visual name="v"><geometry><sphere><radius>9.2</radius></sphere></geometry><material><diffuse>0.49 0.25 0.16 1</diffuse></material></visual>
-      </link>
-    </model>
-
+    <!-- Main sunlight -->
     <light name="mars_key" type="directional">
       <cast_shadows>true</cast_shadows>
+
+      <!-- Position and angle -->
       <pose>0 0 60 0.35 -0.1 0.0</pose>
+
+      <!-- Color -->
       <diffuse>0.80 0.46 0.33 1</diffuse>
-      <specular>0.05 0.03 0.02 1</specular>
-      <attenuation>
-        <range>500</range>
-        <constant>0.97</constant>
-        <linear>0.004</linear>
-        <quadratic>0.0002</quadratic>
-      </attenuation>
+
+      <!-- Light direction -->
       <direction>-0.55 0.20 -0.82</direction>
     </light>
 
+    <!-- Secondary soft light -->
     <light name="mars_fill" type="directional">
       <cast_shadows>false</cast_shadows>
-      <pose>0 0 35 0.15 0.05 0.0</pose>
       <diffuse>0.14 0.08 0.06 1</diffuse>
-      <specular>0 0 0 1</specular>
-      <attenuation>
-        <range>500</range>
-        <constant>1.0</constant>
-        <linear>0.0</linear>
-        <quadratic>0.0</quadratic>
-      </attenuation>
-      <direction>-0.20 0.05 -1.0</direction>
     </light>
 
+
+    <!-- ================= TERRAIN PATCHES ================= -->
+
+    <!-- Dark rocky region -->
     <model name="basalt_patch_01">
       <static>true</static>
       <pose>1.5 -1.0 -0.010 0 0 0.2</pose>
+
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>6.0</radius><length>0.02</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>6.0</radius><length>0.02</length></cylinder></geometry><material><diffuse>0.18 0.16 0.16 1</diffuse></material></visual>
+        <!-- Flat cylinder patch -->
+        <collision name="c">
+          <geometry><cylinder><radius>6.0</radius><length>0.02</length></cylinder></geometry>
+        </collision>
+
+        <!-- Dark color -->
+        <visual name="v">
+          <geometry><cylinder><radius>6.0</radius><length>0.02</length></cylinder></geometry>
+          <material><diffuse>0.18 0.16 0.16 1</diffuse></material>
+        </visual>
       </link>
     </model>
 
+
+    <!-- Light dusty terrain -->
     <model name="dust_patch_01">
       <static>true</static>
       <pose>-2.5 2.5 -0.009 0 0 0.45</pose>
+
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>4.8</radius><length>0.02</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>4.8</radius><length>0.02</length></cylinder></geometry><material><diffuse>0.73 0.50 0.35 1</diffuse></material></visual>
+        <collision name="c">
+          <geometry><cylinder><radius>4.8</radius><length>0.02</length></cylinder></geometry>
+        </collision>
+
+        <visual name="v">
+          <geometry><cylinder><radius>4.8</radius><length>0.02</length></cylinder></geometry>
+          <material><diffuse>0.73 0.50 0.35 1</diffuse></material>
+        </visual>
       </link>
     </model>
 
-    <model name="ridge_patch_01">
-      <static>true</static>
-      <pose>4.4 2.0 -0.006 0 0 0.10</pose>
-      <link name="link">
-        <collision name="c"><geometry><box><size>4.4 2.2 0.04</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>4.4 2.2 0.04</size></box></geometry><material><diffuse>0.63 0.39 0.28 1</diffuse></material></visual>
-      </link>
-    </model>
 
-    <model name="basalt_patch_02">
-      <static>true</static>
-      <pose>-4.5 -2.6 -0.008 0 0 -0.22</pose>
-      <link name="link">
-        <collision name="c"><geometry><cylinder><radius>3.2</radius><length>0.03</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>3.2</radius><length>0.03</length></cylinder></geometry><material><diffuse>0.16 0.14 0.14 1</diffuse></material></visual>
-      </link>
-    </model>
+    <!-- ================= ROCK CLUSTERS (OBSTACLES) ================= -->
 
-    <model name="dust_patch_02">
-      <static>true</static>
-      <pose>0.8 7.4 -0.008 0 0 0.08</pose>
-      <link name="link">
-        <collision name="c"><geometry><cylinder><radius>2.9</radius><length>0.03</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>2.9</radius><length>0.03</length></cylinder></geometry><material><diffuse>0.70 0.48 0.33 1</diffuse></material></visual>
-      </link>
-    </model>
-
+    <!-- Group of rocks -->
     <model name="near_rock_cluster_front">
       <static>true</static>
       <pose>1.9 1.0 0 0 0 0.35</pose>
+
       <link name="link">
-        <collision name="c1"><pose>-0.18 0.04 0.32 0 0 0</pose><geometry><sphere><radius>0.32</radius></sphere></geometry></collision>
-        <collision name="c2"><pose>0.10 -0.18 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry></collision>
-        <collision name="c3"><pose>0.24 0.14 0.30 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.54</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>-0.18 0.04 0.32 0 0 0</pose><geometry><sphere><radius>0.32</radius></sphere></geometry><material><diffuse>0.46 0.29 0.22 1</diffuse></material></visual>
-        <visual name="v2"><pose>0.10 -0.18 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry><material><diffuse>0.41 0.25 0.19 1</diffuse></material></visual>
-        <visual name="v3"><pose>0.24 0.14 0.30 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.54</length></cylinder></geometry><material><diffuse>0.49 0.31 0.24 1</diffuse></material></visual>
+
+        <!-- Multiple shapes → irregular rock -->
+        <collision name="c1">
+          <geometry><sphere><radius>0.32</radius></sphere></geometry>
+        </collision>
+
+        <collision name="c2">
+          <geometry><sphere><radius>0.28</radius></sphere></geometry>
+        </collision>
+
+        <collision name="c3">
+          <geometry><cylinder><radius>0.18</radius></cylinder></geometry>
+        </collision>
+
       </link>
     </model>
 
-    <model name="near_rock_cluster_left">
-      <static>true</static>
-      <pose>-2.6 1.8 0 0 0 -0.40</pose>
-      <link name="link">
-        <collision name="c1"><pose>-0.14 -0.10 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry></collision>
-        <collision name="c2"><pose>0.12 0.08 0.34 0 0 0</pose><geometry><sphere><radius>0.34</radius></sphere></geometry></collision>
-        <collision name="c3"><pose>0.24 -0.02 0.24 0 0 0</pose><geometry><cylinder><radius>0.16</radius><length>0.46</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>-0.14 -0.10 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry><material><diffuse>0.44 0.28 0.21 1</diffuse></material></visual>
-        <visual name="v2"><pose>0.12 0.08 0.34 0 0 0</pose><geometry><sphere><radius>0.34</radius></sphere></geometry><material><diffuse>0.39 0.24 0.18 1</diffuse></material></visual>
-        <visual name="v3"><pose>0.24 -0.02 0.24 0 0 0</pose><geometry><cylinder><radius>0.16</radius><length>0.46</length></cylinder></geometry><material><diffuse>0.47 0.30 0.23 1</diffuse></material></visual>
-      </link>
-    </model>
 
-    <model name="near_rock_cluster_right">
-      <static>true</static>
-      <pose>1.6 -2.0 0 0 0 0.12</pose>
-      <link name="link">
-        <collision name="c1"><pose>-0.20 0.00 0.30 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
-        <collision name="c2"><pose>0.05 0.16 0.26 0 0 0</pose><geometry><sphere><radius>0.26</radius></sphere></geometry></collision>
-        <collision name="c3"><pose>0.18 -0.12 0.28 0 0 0</pose><geometry><cylinder><radius>0.17</radius><length>0.50</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>-0.20 0.00 0.30 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.43 0.27 0.20 1</diffuse></material></visual>
-        <visual name="v2"><pose>0.05 0.16 0.26 0 0 0</pose><geometry><sphere><radius>0.26</radius></sphere></geometry><material><diffuse>0.38 0.23 0.18 1</diffuse></material></visual>
-        <visual name="v3"><pose>0.18 -0.12 0.28 0 0 0</pose><geometry><cylinder><radius>0.17</radius><length>0.50</length></cylinder></geometry><material><diffuse>0.48 0.30 0.22 1</diffuse></material></visual>
-      </link>
-    </model>
+    <!-- ================= FAR TERRAIN ================= -->
 
-    <model name="near_rock_cluster_far">
-      <static>true</static>
-      <pose>0.8 5.8 0 0 0 -0.15</pose>
-      <link name="link">
-        <collision name="c1"><pose>-0.22 0.00 0.24 0 0 0</pose><geometry><sphere><radius>0.24</radius></sphere></geometry></collision>
-        <collision name="c2"><pose>0.08 0.18 0.19 0 0 0</pose><geometry><sphere><radius>0.19</radius></sphere></geometry></collision>
-        <collision name="c3"><pose>0.18 -0.14 0.18 0 0 0</pose><geometry><cylinder><radius>0.11</radius><length>0.30</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>-0.22 0.00 0.24 0 0 0</pose><geometry><sphere><radius>0.24</radius></sphere></geometry><material><diffuse>0.45 0.28 0.21 1</diffuse></material></visual>
-        <visual name="v2"><pose>0.08 0.18 0.19 0 0 0</pose><geometry><sphere><radius>0.19</radius></sphere></geometry><material><diffuse>0.40 0.25 0.19 1</diffuse></material></visual>
-        <visual name="v3"><pose>0.18 -0.14 0.18 0 0 0</pose><geometry><cylinder><radius>0.11</radius><length>0.30</length></cylinder></geometry><material><diffuse>0.49 0.30 0.23 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <model name="front_guard_rock">
-      <static>true</static>
-      <pose>1.00 0.0 0 0 0 0</pose>
-      <link name="link">
-        <collision name="c1"><pose>0 0 0.52 0 0 0</pose><geometry><cylinder><radius>0.42</radius><length>1.04</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>0 0 0.52 0 0 0</pose><geometry><cylinder><radius>0.42</radius><length>1.04</length></cylinder></geometry><material><diffuse>0.51 0.32 0.24 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <model name="boulder_cluster_left_01">
-      <static>true</static>
-      <pose>3.5 2.6 0 0 0 0.5</pose>
-      <link name="link">
-        <collision name="c1"><pose>-0.18 0.00 0.12 0 0 0</pose><geometry><sphere><radius>0.13</radius></sphere></geometry></collision>
-        <collision name="c2"><pose>0.10 0.14 0.10 0 0 0</pose><geometry><sphere><radius>0.11</radius></sphere></geometry></collision>
-        <collision name="c3"><pose>0.14 -0.10 0.08 0 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.16</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>-0.18 0.00 0.12 0 0 0</pose><geometry><sphere><radius>0.13</radius></sphere></geometry><material><diffuse>0.44 0.28 0.21 1</diffuse></material></visual>
-        <visual name="v2"><pose>0.10 0.14 0.10 0 0 0</pose><geometry><sphere><radius>0.11</radius></sphere></geometry><material><diffuse>0.39 0.24 0.19 1</diffuse></material></visual>
-        <visual name="v3"><pose>0.14 -0.10 0.08 0 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.16</length></cylinder></geometry><material><diffuse>0.47 0.30 0.23 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <model name="boulder_cluster_right_01">
-      <static>true</static>
-      <pose>2.8 -2.8 0 0 0 -0.2</pose>
-      <link name="link">
-        <collision name="c1"><pose>-0.16 -0.06 0.11 0 0 0</pose><geometry><sphere><radius>0.12</radius></sphere></geometry></collision>
-        <collision name="c2"><pose>0.12 0.11 0.08 0 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.14</length></cylinder></geometry></collision>
-        <visual name="v1"><pose>-0.16 -0.06 0.11 0 0 0</pose><geometry><sphere><radius>0.12</radius></sphere></geometry><material><diffuse>0.45 0.29 0.22 1</diffuse></material></visual>
-        <visual name="v2"><pose>0.12 0.11 0.08 0 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.14</length></cylinder></geometry><material><diffuse>0.40 0.25 0.20 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <model name="far_obstacle_01">
-      <static>true</static>
-      <pose>-12 -6 0.10 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><sphere><radius>0.14</radius></sphere></geometry></collision><visual name="v"><geometry><sphere><radius>0.14</radius></sphere></geometry><material><diffuse>0.41 0.25 0.19 1</diffuse></material></visual></link>
-    </model>
-
-    <!-- Far-field terrain variation so zoomed-out view is not plain -->
+    <!-- Large patches far away for realism -->
     <model name="basalt_patch_far_01">
       <static>true</static>
       <pose>22 -18 -0.011 0 0 0.2</pose>
-      <link name="link">
-        <collision name="c"><geometry><cylinder><radius>10.5</radius><length>0.02</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>10.5</radius><length>0.02</length></cylinder></geometry><material><diffuse>0.20 0.16 0.15 1</diffuse></material></visual>
-      </link>
     </model>
 
-    <model name="dust_patch_far_01">
-      <static>true</static>
-      <pose>-24 16 -0.010 0 0 -0.35</pose>
-      <link name="link">
-        <collision name="c"><geometry><cylinder><radius>11.0</radius><length>0.02</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>11.0</radius><length>0.02</length></cylinder></geometry><material><diffuse>0.67 0.44 0.30 1</diffuse></material></visual>
-      </link>
-    </model>
 
-    <model name="dust_patch_far_02">
-      <static>true</static>
-      <pose>0 28 -0.010 0 0 0.0</pose>
-      <link name="link">
-        <collision name="c"><geometry><cylinder><radius>9.0</radius><length>0.02</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>9.0</radius><length>0.02</length></cylinder></geometry><material><diffuse>0.62 0.40 0.28 1</diffuse></material></visual>
-      </link>
-    </model>
+    <!-- ================= PERIMETER ROCKS ================= -->
 
-    <!-- Additional distant crater rings -->
-    <model name="crater_far_01_rim">
-      <static>true</static>
-      <pose>18 20 0.06 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>4.8</radius><length>0.18</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>4.8</radius><length>0.18</length></cylinder></geometry><material><diffuse>0.54 0.32 0.23 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="crater_far_01_floor">
-      <static>true</static>
-      <pose>18 20 -0.08 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>3.9</radius><length>0.08</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>3.9</radius><length>0.08</length></cylinder></geometry><material><diffuse>0.23 0.16 0.13 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="crater_far_02_rim">
-      <static>true</static>
-      <pose>-22 -20 0.06 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>5.4</radius><length>0.20</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>5.4</radius><length>0.20</length></cylinder></geometry><material><diffuse>0.52 0.31 0.22 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="crater_far_02_floor">
-      <static>true</static>
-      <pose>-22 -20 -0.09 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>4.3</radius><length>0.10</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>4.3</radius><length>0.10</length></cylinder></geometry><material><diffuse>0.22 0.15 0.12 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="crater_far_03_rim">
-      <static>true</static>
-      <pose>30 -4 0.05 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>4.0</radius><length>0.16</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>4.0</radius><length>0.16</length></cylinder></geometry><material><diffuse>0.50 0.30 0.21 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="crater_far_03_floor">
-      <static>true</static>
-      <pose>30 -4 -0.07 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>3.2</radius><length>0.08</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>3.2</radius><length>0.08</length></cylinder></geometry><material><diffuse>0.24 0.17 0.13 1</diffuse></material></visual></link>
-    </model>
-
-    <!-- Perimeter rock belts create natural routes beyond spawn area -->
+    <!-- Boundary obstacles -->
     <model name="perimeter_rock_01">
       <static>true</static>
       <pose>-30 10 0.18 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><sphere><radius>0.24</radius></sphere></geometry></collision><visual name="v"><geometry><sphere><radius>0.24</radius></sphere></geometry><material><diffuse>0.44 0.28 0.21 1</diffuse></material></visual></link>
     </model>
 
-    <model name="perimeter_rock_02">
-      <static>true</static>
-      <pose>-28 12 0.14 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>0.17</radius><length>0.25</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>0.17</radius><length>0.25</length></cylinder></geometry><material><diffuse>0.40 0.24 0.18 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="perimeter_rock_03">
-      <static>true</static>
-      <pose>27 18 0.16 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><sphere><radius>0.21</radius></sphere></geometry></collision><visual name="v"><geometry><sphere><radius>0.21</radius></sphere></geometry><material><diffuse>0.46 0.29 0.22 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="perimeter_rock_04">
-      <static>true</static>
-      <pose>29 16 0.12 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>0.14</radius><length>0.22</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>0.14</radius><length>0.22</length></cylinder></geometry><material><diffuse>0.39 0.24 0.19 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="perimeter_rock_05">
-      <static>true</static>
-      <pose>-26 -24 0.17 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><sphere><radius>0.23</radius></sphere></geometry></collision><visual name="v"><geometry><sphere><radius>0.23</radius></sphere></geometry><material><diffuse>0.43 0.27 0.21 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="perimeter_rock_06">
-      <static>true</static>
-      <pose>24 -22 0.15 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><sphere><radius>0.20</radius></sphere></geometry></collision><visual name="v"><geometry><sphere><radius>0.20</radius></sphere></geometry><material><diffuse>0.45 0.28 0.22 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="perimeter_rock_07">
-      <static>true</static>
-      <pose>14 30 0.14 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><cylinder><radius>0.16</radius><length>0.22</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>0.16</radius><length>0.22</length></cylinder></geometry><material><diffuse>0.41 0.25 0.19 1</diffuse></material></visual></link>
-    </model>
-
-    <model name="perimeter_rock_08">
-      <static>true</static>
-      <pose>-10 32 0.16 0 0 0</pose>
-      <link name="link"><collision name="c"><geometry><sphere><radius>0.22</radius></sphere></geometry></collision><visual name="v"><geometry><sphere><radius>0.22</radius></sphere></geometry><material><diffuse>0.42 0.26 0.20 1</diffuse></material></visual></link>
-    </model>
   </world>
 </sdf>
