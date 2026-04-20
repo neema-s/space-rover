@@ -2,19 +2,22 @@
 
   <!-- ================= VISUAL MATERIALS ================= -->
 
+  <!-- Set color of base in Gazebo -->
   <gazebo reference="base_link">
     <material>Gazebo/DarkGrey</material>
   </gazebo>
 
+  <!-- Set camera color -->
   <gazebo reference="camera_link">
     <material>Gazebo/Blue</material>
   </gazebo>
 
+  <!-- Set lidar color -->
   <gazebo reference="lidar_link">
     <material>Gazebo/Black</material>
   </gazebo>
 
-  <!-- LEFT WHEELS -->
+  <!-- LEFT WHEELS (visual only) -->
   <gazebo reference="front_left_wheel">
     <material>Gazebo/Black</material>
   </gazebo>
@@ -27,7 +30,7 @@
     <material>Gazebo/Black</material>
   </gazebo>
 
-  <!-- RIGHT WHEELS -->
+  <!-- RIGHT WHEELS (visual only) -->
   <gazebo reference="front_right_wheel">
     <material>Gazebo/Black</material>
   </gazebo>
@@ -40,29 +43,44 @@
     <material>Gazebo/Black</material>
   </gazebo>
 
+
   <!-- ================= CAMERA SENSOR ================= -->
 
+  <!-- Attach camera sensor to camera_link -->
   <gazebo reference="camera_link">
     <sensor type="camera" name="camera_sensor">
+
+      <!-- Sensor update frequency (10 Hz) -->
       <update_rate>10</update_rate>
+
+      <!-- Always active -->
       <always_on>true</always_on>
 
       <camera>
+        <!-- Field of view (~60 degrees) -->
         <horizontal_fov>1.047</horizontal_fov>
+
+        <!-- Image resolution -->
         <image>
           <width>640</width>
           <height>480</height>
           <format>R8G8B8</format>
         </image>
+
+        <!-- Near and far clipping planes -->
         <clip>
           <near>0.1</near>
           <far>100</far>
         </clip>
       </camera>
 
+      <!-- ROS plugin to publish camera data -->
       <plugin name="gazebo_ros_camera" filename="libgazebo_ros_camera.so">
         <ros>
+          <!-- Namespace for camera topics -->
           <namespace>/camera</namespace>
+
+          <!-- Remap topic name -->
           <remapping>image_raw:=image_raw</remapping>
         </ros>
       </plugin>
@@ -70,25 +88,42 @@
     </sensor>
   </gazebo>
 
+
   <!-- ================= LIDAR SENSOR ================= -->
 
+  <!-- Attach lidar to lidar_link -->
   <gazebo reference="lidar_link">
     <sensor type="ray" name="lidar_sensor">
+
+      <!-- Update rate (10 Hz) -->
       <update_rate>10</update_rate>
+
+      <!-- Always active -->
       <always_on>true</always_on>
 
       <ray>
         <scan>
           <horizontal>
+            <!-- 360 rays → full circle scan -->
             <samples>360</samples>
+
+            <!-- Start angle -->
             <min_angle>-3.14</min_angle>
+
+            <!-- End angle -->
             <max_angle>3.14</max_angle>
           </horizontal>
         </scan>
+
         <range>
+          <!-- Minimum detectable distance -->
           <min>0.2</min>
+
+          <!-- Maximum detectable distance -->
           <max>10.0</max>
         </range>
+
+        <!-- Add realistic sensor noise -->
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>
@@ -96,58 +131,87 @@
         </noise>
       </ray>
 
+      <!-- ROS plugin to publish LIDAR data -->
       <plugin name="gazebo_ros_lidar" filename="libgazebo_ros_ray_sensor.so">
         <ros>
+          <!-- Root namespace -->
           <namespace>/</namespace>
+
+          <!-- Topic remapping -->
           <remapping>out:=gazebo_ros_lidar/out</remapping>
         </ros>
+
+        <!-- Message type -->
         <output_type>sensor_msgs/LaserScan</output_type>
+
+        <!-- Frame of reference -->
         <frame_name>lidar_link</frame_name>
       </plugin>
 
     </sensor>
   </gazebo>
 
-    <!-- ================= IMU SENSOR ================= -->
 
-    <gazebo reference="base_link">
-      <sensor type="imu" name="imu_sensor">
-        <update_rate>50</update_rate>
-        <always_on>true</always_on>
+  <!-- ================= IMU SENSOR ================= -->
 
-        <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu_sensor.so">
-          <ros>
-            <namespace>/imu</namespace>
-            <remapping>out:=gazebo_ros_imu/out</remapping>
-          </ros>
-        </plugin>
+  <!-- Attach IMU to base -->
+  <gazebo reference="base_link">
+    <sensor type="imu" name="imu_sensor">
 
-      </sensor>
-    </gazebo>
-    
-  <!-- ================= DIFF DRIVE CONTROLLER (FIXED) ================= -->
-<gazebo>
-  <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <!-- High update rate (50 Hz) -->
+      <update_rate>50</update_rate>
 
-    <ros>
-      <namespace>/</namespace>
-    </ros>
+      <!-- Always active -->
+      <always_on>true</always_on>
 
-    <left_joint>mid_left_wheel_joint</left_joint>
-    <right_joint>mid_right_wheel_joint</right_joint>
+      <!-- ROS plugin for IMU -->
+      <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu_sensor.so">
+        <ros>
+          <!-- Namespace -->
+          <namespace>/imu</namespace>
 
-    <wheel_separation>0.5</wheel_separation>
+          <!-- Topic remapping -->
+          <remapping>out:=gazebo_ros_imu/out</remapping>
+        </ros>
+      </plugin>
 
-    <!-- USE diameter instead -->
-    <wheel_diameter>0.24</wheel_diameter>
+    </sensor>
+  </gazebo>
 
-    <publish_odom>true</publish_odom>
-    <publish_odom_tf>true</publish_odom_tf>
 
-    <command_topic>/cmd_vel</command_topic>
-    <odometry_topic>/odom</odometry_topic>
+  <!-- ================= DIFF DRIVE CONTROLLER ================= -->
 
-  </plugin>
-</gazebo>
+  <gazebo>
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+      <ros>
+        <!-- Root namespace -->
+        <namespace>/</namespace>
+      </ros>
+
+      <!-- Driving wheels (only middle wheels are powered) -->
+      <left_joint>mid_left_wheel_joint</left_joint>
+      <right_joint>mid_right_wheel_joint</right_joint>
+
+      <!-- Distance between left and right wheels -->
+      <wheel_separation>0.5</wheel_separation>
+
+      <!-- Wheel size (diameter = 2 * radius = 0.24) -->
+      <wheel_diameter>0.24</wheel_diameter>
+
+      <!-- Publish odometry data -->
+      <publish_odom>true</publish_odom>
+
+      <!-- Publish TF transform -->
+      <publish_odom_tf>true</publish_odom_tf>
+
+      <!-- Input velocity command topic -->
+      <command_topic>/cmd_vel</command_topic>
+
+      <!-- Output odometry topic -->
+      <odometry_topic>/odom</odometry_topic>
+
+    </plugin>
+  </gazebo>
 
 </robot>
