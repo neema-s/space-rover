@@ -1,0 +1,7 @@
+[INFO] [1776662317.567492351] [imu.gazebo_ros_imu]: <initial_orientation_as_reference> is unset, using default value of false to comply with REP 145 (world as orientation reference)
+[INFO] [1776662319.553620861] [camera.gazebo_ros_camera]: Publishing camera info to [/camera/camera_sensor/camera_info]
+[INFO] [1776662319.697658675] [diff_drive_controller]: Wheel pair 1 separation set to [0.500000m]
+[INFO] [1776662319.701080822] [diff_drive_controller]: Wheel pair 1 diameter set to [0.240000m]
+[INFO] [1776662319.705534858] [diff_drive_controller]: Subscribed to [/cmd_vel]
+[INFO] [1776662320.021511382] [diff_drive_controller]: Advertise odometry on [/odom]
+[INFO] [1776662320.364216931] [diff_drive_controller]: Publishing odom transforms between [odom] and [base_footprint]

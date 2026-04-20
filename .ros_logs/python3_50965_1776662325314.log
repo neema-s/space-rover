@@ -1,0 +1,2 @@
+[INFO] [1776662331.761518801] [mission_logger]: Mission logger writing to /home/pes2ug23cs383/mar_project/space-rover/src/space_rover/logs/mission_log.csv
+[INFO] [1776662343.910452052] [mission_logger]: Mission summary: distance=0.08m, estops=0, terrain=ROCKY

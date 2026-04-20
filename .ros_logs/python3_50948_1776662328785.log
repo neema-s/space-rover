@@ -1,0 +1,4 @@
+[INFO] [1776662337.529607037] [imu_node]: IMU Node Started (listening on /imu/gazebo_ros_imu/out, publishing /imu/data)
+[INFO] [1776662337.532159423] [imu_node]: IMU update #1: orientation=(0.00, 0.00, -0.00, 1.00)
+[INFO] [1776662339.330785926] [imu_node]: IMU update #20: orientation=(0.00, 0.00, -0.00, 1.00)
+[INFO] [1776662342.174565800] [imu_node]: IMU update #40: orientation=(0.00, 0.00, -0.00, 1.00)
