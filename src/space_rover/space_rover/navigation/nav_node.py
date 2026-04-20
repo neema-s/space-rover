@@ -26,6 +26,13 @@ class NavNode(Node):
 
         self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
 
+        self.teleop_sub = self.create_subscription(
+            Twist,
+            '/cmd_vel_teleop',
+            self.teleop_callback,
+            10
+        )
+
         self.goal_sub = self.create_subscription(
             PoseStamped,
             '/goal_pose',
@@ -50,10 +57,16 @@ class NavNode(Node):
         self.goal = None
         self.current_pose = None
         self.obstacle_detected = False
+        self.teleop_cmd = None
+        self.last_teleop_time = 0
 
         self.timer = self.create_timer(0.1, self.navigate)
 
         self.get_logger().info("Navigation Node Started")
+
+    def teleop_callback(self, msg):
+        self.teleop_cmd = msg
+        self.last_teleop_time = self.get_clock().now().nanoseconds
 
     def goal_callback(self, msg):
         self.goal = msg.pose
@@ -66,11 +79,16 @@ class NavNode(Node):
         self.obstacle_detected = msg.data
 
     def navigate(self):
-        if self.goal is None or self.current_pose is None:
-            return
-
         if self.obstacle_detected:
             # Let obstacle handler own /cmd_vel while hazard is active.
+            return
+
+        now_ns = self.get_clock().now().nanoseconds
+        if self.teleop_cmd is not None and (now_ns - self.last_teleop_time) < 500_000_000:
+            self.cmd_pub.publish(self.teleop_cmd)
+            return
+
+        if self.goal is None or self.current_pose is None:
             return
 
         dx = self.goal.position.x - self.current_pose.position.x

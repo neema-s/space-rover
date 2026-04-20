@@ -30,6 +30,9 @@ class DashboardState:
     waypoint_total: int = 3
     last_camera_time: float = 0.0
     last_scan_time: float = 0.0
+    teleop_active: bool = False
+    manual_linear: float = 0.0
+    manual_angular: float = 0.0
 
 
 @dataclass
@@ -54,8 +57,14 @@ class DashboardNode(Node):
         self.create_subscription(PoseStamped, '/goal_pose', self.goal_callback, 10)
         self.create_subscription(Bool, '/emergency_stop', self.estop_callback, 10)
 
-        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel_teleop', 10)
         self.estop_pub = self.create_publisher(Bool, '/emergency_stop', 10)
+
+        self.teleop_timer = self.create_timer(0.1, self.teleop_loop)
+
+    def teleop_loop(self):
+        if self.state.teleop_active:
+            self.publish_twist(self.state.manual_linear, self.state.manual_angular)
 
     def camera_callback(self, msg):
         try:
@@ -266,8 +275,9 @@ class RoverDashboardApp:
 
         actions = tk.Frame(slider_frame, bg=self.theme['panel'])
         actions.pack(fill='x', pady=(16, 4))
+        self._button(actions, 'RESUME AUTO NAV', self.resume_auto, bg=self.theme['info']).pack(fill='x', pady=(0, 6))
         self._button(actions, 'EMERGENCY STOP', lambda: self.publish_estop(True), bg=self.theme['bad']).pack(fill='x', pady=(0, 6))
-        self._button(actions, 'RESUME', lambda: self.publish_estop(False), bg=self.theme['good']).pack(fill='x')
+        self._button(actions, 'RESUME ESTOP', lambda: self.publish_estop(False), bg=self.theme['good']).pack(fill='x')
 
         self.mission_box = tk.Text(state.content, height=18, bg=self.theme['panel_alt'], fg=self.theme['text'], insertbackground=self.theme['text'], relief='flat', wrap='word')
         self.mission_box.pack(fill='both', expand=True, padx=12, pady=12)
@@ -287,10 +297,18 @@ class RoverDashboardApp:
 
     def drive(self, forward_factor, turn_factor):
         speed = self.node.speed_scale
-        self.node.publish_twist(linear=forward_factor * speed, angular=turn_factor * speed)
+        self.node.state.teleop_active = True
+        self.node.state.manual_linear = forward_factor * speed
+        self.node.state.manual_angular = turn_factor * speed
 
     def stop(self):
-        self.node.publish_twist(0.0, 0.0)
+        self.node.state.teleop_active = True
+        self.node.state.manual_linear = 0.0
+        self.node.state.manual_angular = 0.0
+
+    def resume_auto(self):
+        self.node.state.teleop_active = False
+        self.append_log("Manual override disabled. Resuming Auto Nav.")
 
     def publish_estop(self, active):
         self.node.publish_estop(active)

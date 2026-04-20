@@ -59,7 +59,7 @@ class ObstacleAvoidance(Node):
         if front.size == 0:
             return False
 
-        return float(np.min(front)) < 0.8
+        return float(np.min(front)) < 2.5
 
     def control_loop(self):
         now_ns = self.get_clock().now().nanoseconds
