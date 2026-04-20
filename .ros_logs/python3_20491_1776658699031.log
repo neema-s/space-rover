@@ -1,0 +1,2 @@
+[INFO] [1776658703.123952699] [mission_logger]: Mission logger writing to /home/pes2ug23cs383/mar_project/space-rover/src/space_rover/logs/mission_log.csv
+[INFO] [1776658735.181308442] [mission_logger]: Mission summary: distance=0.00m, estops=0, terrain=UNKNOWN

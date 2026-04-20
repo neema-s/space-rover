@@ -1,0 +1,5 @@
+[INFO] [1776660940.277978491] [camera_node]: Camera Node Started (publishing /camera/image_raw)
+[INFO] [1776660947.308073918] [camera_node]: Camera update #1: 640x480
+[INFO] [1776661023.175487102] [camera_node]: Camera update #30: 640x480
+[INFO] [1776661422.704875007] [camera_node]: Camera update #60: 640x480
+[INFO] [1776661568.430492018] [camera_node]: Camera update #90: 640x480

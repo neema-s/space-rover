@@ -1,0 +1,25 @@
+1776658560.7047434 [INFO] [launch]: All log files can be found below /home/pes2ug23cs383/mar_project/space-rover/.ros_logs/2026-04-20-09-46-00-702639-pes2ug23cs383-22
+1776658560.7064567 [INFO] [launch]: Default logging verbosity is set to INFO
+1776658561.0925517 [INFO] [gazebo-1]: process started with pid [23]
+1776658561.0927913 [INFO] [robot_state_publisher-2]: process started with pid [25]
+1776658561.0928943 [INFO] [spawn_entity.py-3]: process started with pid [27]
+1776658561.1902974 [robot_state_publisher-2] getifaddrs: Operation not permitted
+1776658561.1905053 [robot_state_publisher-2] getifaddrs: Operation not permitted
+1776658561.1905715 [robot_state_publisher-2] getifaddrs: Operation not permitted
+1776658561.1906459 [robot_state_publisher-2] getifaddrs: Operation not permitted
+1776658561.2147696 [robot_state_publisher-2] [37;1m2026-04-20 09:46:01.183 [31;1m[[37;1mTRANSPORT[31;1m Error] [37mAll whitelist interfaces were filtered out[34;1m -> Function [36mUDPv4Transport[m
+1776658561.2848220 [robot_state_publisher-2] [37;1m2026-04-20 09:46:01.183 [31;1m[[37;1mTRANSPORT_UDP[31;1m Error] [37mError creating socket: Operation not permitted[34;1m -> Function [36minit[m
+1776658561.2850344 [robot_state_publisher-2] [37;1m2026-04-20 09:46:01.183 [31;1m[[37;1mRTPS_PARTICIPANT[31;1m Error] [37mUser transport failed to register.[34;1m -> Function [36mRTPSParticipantImpl[m
+1776658561.2854536 [robot_state_publisher-2] [WARN] [1776658561.233969148] [kdl_parser]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+1776658561.2855649 [robot_state_publisher-2] [INFO] [1776658561.234083606] [robot_state_publisher]: got segment base_link
+1776658561.2856214 [robot_state_publisher-2] [INFO] [1776658561.234195288] [robot_state_publisher]: got segment camera_link
+1776658561.2857187 [robot_state_publisher-2] [INFO] [1776658561.234204295] [robot_state_publisher]: got segment front_left_wheel
+1776658561.2857888 [robot_state_publisher-2] [INFO] [1776658561.234210777] [robot_state_publisher]: got segment front_right_wheel
+1776658561.2858446 [robot_state_publisher-2] [INFO] [1776658561.234217089] [robot_state_publisher]: got segment left_arm
+1776658561.2858944 [robot_state_publisher-2] [INFO] [1776658561.234223391] [robot_state_publisher]: got segment lidar_link
+1776658561.2859595 [robot_state_publisher-2] [INFO] [1776658561.234229693] [robot_state_publisher]: got segment mast_link
+1776658561.2860260 [robot_state_publisher-2] [INFO] [1776658561.234235885] [robot_state_publisher]: got segment mid_left_wheel
+1776658561.2860742 [robot_state_publisher-2] [INFO] [1776658561.234242157] [robot_state_publisher]: got segment mid_right_wheel
+1776658561.2861228 [robot_state_publisher-2] [INFO] [1776658561.234248308] [robot_state_publisher]: got segment rear_left_wheel
+1776658561.2861700 [robot_state_publisher-2] [INFO] [1776658561.234254681] [robot_state_publisher]: got segment rear_right_wheel
+1776658561.2862153 [robot_state_publisher-2] [INFO] [1776658561.234260722] [robot_state_publisher]: got segment solar_panel

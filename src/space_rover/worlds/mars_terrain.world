@@ -144,57 +144,91 @@
       </link>
     </model>
 
-    <model name="crater_01_rim">
+    <model name="ridge_patch_01">
       <static>true</static>
-      <pose>4.6 2.2 0.05 0 0 0</pose>
+      <pose>4.4 2.0 -0.006 0 0 0.10</pose>
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>2.9</radius><length>0.16</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>2.9</radius><length>0.16</length></cylinder></geometry><material><diffuse>0.58 0.35 0.24 1</diffuse></material></visual>
+        <collision name="c"><geometry><box><size>4.4 2.2 0.04</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4.4 2.2 0.04</size></box></geometry><material><diffuse>0.63 0.39 0.28 1</diffuse></material></visual>
       </link>
     </model>
 
-    <model name="crater_01_floor">
+    <model name="basalt_patch_02">
       <static>true</static>
-      <pose>4.6 2.2 -0.06 0 0 0</pose>
+      <pose>-4.5 -2.6 -0.008 0 0 -0.22</pose>
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>2.25</radius><length>0.06</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>2.25</radius><length>0.06</length></cylinder></geometry><material><diffuse>0.24 0.17 0.14 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>3.2</radius><length>0.03</length></cylinder></geometry></collision>
+        <visual name="v"><geometry><cylinder><radius>3.2</radius><length>0.03</length></cylinder></geometry><material><diffuse>0.16 0.14 0.14 1</diffuse></material></visual>
       </link>
     </model>
 
-    <model name="crater_02_rim">
+    <model name="dust_patch_02">
       <static>true</static>
-      <pose>-4.8 -2.8 0.045 0 0 0</pose>
+      <pose>0.8 7.4 -0.008 0 0 0.08</pose>
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>2.5</radius><length>0.14</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>2.5</radius><length>0.14</length></cylinder></geometry><material><diffuse>0.56 0.33 0.23 1</diffuse></material></visual>
+        <collision name="c"><geometry><cylinder><radius>2.9</radius><length>0.03</length></cylinder></geometry></collision>
+        <visual name="v"><geometry><cylinder><radius>2.9</radius><length>0.03</length></cylinder></geometry><material><diffuse>0.70 0.48 0.33 1</diffuse></material></visual>
       </link>
     </model>
 
-    <model name="crater_02_floor">
+    <model name="near_rock_cluster_front">
       <static>true</static>
-      <pose>-4.8 -2.8 -0.055 0 0 0</pose>
+      <pose>1.9 1.0 0 0 0 0.35</pose>
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>1.95</radius><length>0.06</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>1.95</radius><length>0.06</length></cylinder></geometry><material><diffuse>0.23 0.16 0.13 1</diffuse></material></visual>
+        <collision name="c1"><pose>-0.18 0.04 0.32 0 0 0</pose><geometry><sphere><radius>0.32</radius></sphere></geometry></collision>
+        <collision name="c2"><pose>0.10 -0.18 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry></collision>
+        <collision name="c3"><pose>0.24 0.14 0.30 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.54</length></cylinder></geometry></collision>
+        <visual name="v1"><pose>-0.18 0.04 0.32 0 0 0</pose><geometry><sphere><radius>0.32</radius></sphere></geometry><material><diffuse>0.46 0.29 0.22 1</diffuse></material></visual>
+        <visual name="v2"><pose>0.10 -0.18 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry><material><diffuse>0.41 0.25 0.19 1</diffuse></material></visual>
+        <visual name="v3"><pose>0.24 0.14 0.30 0 0 0</pose><geometry><cylinder><radius>0.18</radius><length>0.54</length></cylinder></geometry><material><diffuse>0.49 0.31 0.24 1</diffuse></material></visual>
       </link>
     </model>
 
-    <model name="crater_03_rim">
+    <model name="near_rock_cluster_left">
       <static>true</static>
-      <pose>0.5 7.8 0.040 0 0 0</pose>
+      <pose>-2.6 1.8 0 0 0 -0.40</pose>
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>2.2</radius><length>0.12</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>2.2</radius><length>0.12</length></cylinder></geometry><material><diffuse>0.54 0.31 0.22 1</diffuse></material></visual>
+        <collision name="c1"><pose>-0.14 -0.10 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry></collision>
+        <collision name="c2"><pose>0.12 0.08 0.34 0 0 0</pose><geometry><sphere><radius>0.34</radius></sphere></geometry></collision>
+        <collision name="c3"><pose>0.24 -0.02 0.24 0 0 0</pose><geometry><cylinder><radius>0.16</radius><length>0.46</length></cylinder></geometry></collision>
+        <visual name="v1"><pose>-0.14 -0.10 0.28 0 0 0</pose><geometry><sphere><radius>0.28</radius></sphere></geometry><material><diffuse>0.44 0.28 0.21 1</diffuse></material></visual>
+        <visual name="v2"><pose>0.12 0.08 0.34 0 0 0</pose><geometry><sphere><radius>0.34</radius></sphere></geometry><material><diffuse>0.39 0.24 0.18 1</diffuse></material></visual>
+        <visual name="v3"><pose>0.24 -0.02 0.24 0 0 0</pose><geometry><cylinder><radius>0.16</radius><length>0.46</length></cylinder></geometry><material><diffuse>0.47 0.30 0.23 1</diffuse></material></visual>
       </link>
     </model>
 
-    <model name="crater_03_floor">
+    <model name="near_rock_cluster_right">
       <static>true</static>
-      <pose>0.5 7.8 -0.050 0 0 0</pose>
+      <pose>1.6 -2.0 0 0 0 0.12</pose>
       <link name="link">
-        <collision name="c"><geometry><cylinder><radius>1.65</radius><length>0.05</length></cylinder></geometry></collision>
-        <visual name="v"><geometry><cylinder><radius>1.65</radius><length>0.05</length></cylinder></geometry><material><diffuse>0.23 0.16 0.13 1</diffuse></material></visual>
+        <collision name="c1"><pose>-0.20 0.00 0.30 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+        <collision name="c2"><pose>0.05 0.16 0.26 0 0 0</pose><geometry><sphere><radius>0.26</radius></sphere></geometry></collision>
+        <collision name="c3"><pose>0.18 -0.12 0.28 0 0 0</pose><geometry><cylinder><radius>0.17</radius><length>0.50</length></cylinder></geometry></collision>
+        <visual name="v1"><pose>-0.20 0.00 0.30 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.43 0.27 0.20 1</diffuse></material></visual>
+        <visual name="v2"><pose>0.05 0.16 0.26 0 0 0</pose><geometry><sphere><radius>0.26</radius></sphere></geometry><material><diffuse>0.38 0.23 0.18 1</diffuse></material></visual>
+        <visual name="v3"><pose>0.18 -0.12 0.28 0 0 0</pose><geometry><cylinder><radius>0.17</radius><length>0.50</length></cylinder></geometry><material><diffuse>0.48 0.30 0.22 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <model name="near_rock_cluster_far">
+      <static>true</static>
+      <pose>0.8 5.8 0 0 0 -0.15</pose>
+      <link name="link">
+        <collision name="c1"><pose>-0.22 0.00 0.24 0 0 0</pose><geometry><sphere><radius>0.24</radius></sphere></geometry></collision>
+        <collision name="c2"><pose>0.08 0.18 0.19 0 0 0</pose><geometry><sphere><radius>0.19</radius></sphere></geometry></collision>
+        <collision name="c3"><pose>0.18 -0.14 0.18 0 0 0</pose><geometry><cylinder><radius>0.11</radius><length>0.30</length></cylinder></geometry></collision>
+        <visual name="v1"><pose>-0.22 0.00 0.24 0 0 0</pose><geometry><sphere><radius>0.24</radius></sphere></geometry><material><diffuse>0.45 0.28 0.21 1</diffuse></material></visual>
+        <visual name="v2"><pose>0.08 0.18 0.19 0 0 0</pose><geometry><sphere><radius>0.19</radius></sphere></geometry><material><diffuse>0.40 0.25 0.19 1</diffuse></material></visual>
+        <visual name="v3"><pose>0.18 -0.14 0.18 0 0 0</pose><geometry><cylinder><radius>0.11</radius><length>0.30</length></cylinder></geometry><material><diffuse>0.49 0.30 0.23 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <model name="front_guard_rock">
+      <static>true</static>
+      <pose>1.00 0.0 0 0 0 0</pose>
+      <link name="link">
+        <collision name="c1"><pose>0 0 0.52 0 0 0</pose><geometry><cylinder><radius>0.42</radius><length>1.04</length></cylinder></geometry></collision>
+        <visual name="v1"><pose>0 0 0.52 0 0 0</pose><geometry><cylinder><radius>0.42</radius><length>1.04</length></cylinder></geometry><material><diffuse>0.51 0.32 0.24 1</diffuse></material></visual>
       </link>
     </model>
 
