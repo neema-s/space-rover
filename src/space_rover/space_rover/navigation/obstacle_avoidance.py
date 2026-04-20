@@ -5,6 +5,7 @@ from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Bool, String
 from geometry_msgs.msg import Twist
 import numpy as np
+import math
 
 
 class ObstacleAvoidance(Node):
@@ -31,6 +32,7 @@ class ObstacleAvoidance(Node):
         self.latest_scan = None
         self.current_terrain = 'UNKNOWN'
         self.avoidance_mode = 'CLEAR'
+        self.turn_direction = 1.0
         self.step_deadline_ns = 0
         self.create_timer(0.1, self.control_loop)
 
@@ -40,26 +42,38 @@ class ObstacleAvoidance(Node):
     def terrain_callback(self, msg):
         self.current_terrain = msg.data
 
-    def _front_is_blocked(self):
+    def _sector_min(self, center_deg, half_width_deg):
         if self.latest_scan is None or len(self.latest_scan.ranges) == 0:
-            return False
+            return float('inf')
 
-        ranges = np.array(self.latest_scan.ranges, dtype=np.float32)
-        finite = np.isfinite(ranges)
-        ranges = ranges[finite]
-        if ranges.size == 0:
-            return False
+        mins = []
+        center = math.radians(center_deg)
+        half_width = math.radians(half_width_deg)
+        angle = self.latest_scan.angle_min
 
-        # Use 60-degree front cone centered around heading.
-        full = np.array(self.latest_scan.ranges, dtype=np.float32)
-        mid = len(full) // 2
-        span = max(1, len(full) // 12)
-        front = full[mid - span : mid + span + 1]
-        front = front[np.isfinite(front)]
-        if front.size == 0:
-            return False
+        for distance in self.latest_scan.ranges:
+            if abs(self._normalize_angle(angle - center)) <= half_width and math.isfinite(distance):
+                mins.append(distance)
+            angle += self.latest_scan.angle_increment
 
-        return float(np.min(front)) < 0.8
+        if not mins:
+            return float('inf')
+        return float(min(mins))
+
+    def _normalize_angle(self, angle):
+        while angle > math.pi:
+            angle -= 2.0 * math.pi
+        while angle < -math.pi:
+            angle += 2.0 * math.pi
+        return angle
+
+    def _front_is_blocked(self):
+        return self._sector_min(0.0, 24.0) < 1.15
+
+    def _pick_turn_direction(self):
+        left_clearance = self._sector_min(55.0, 30.0)
+        right_clearance = self._sector_min(-55.0, 30.0)
+        return 1.0 if left_clearance >= right_clearance else -1.0
 
     def control_loop(self):
         now_ns = self.get_clock().now().nanoseconds
@@ -69,17 +83,23 @@ class ObstacleAvoidance(Node):
         hazard = crater_detected or obstacle_detected
 
         if self.avoidance_mode == 'CLEAR' and hazard:
-            # Crater policy: do not enter crater. Stop, reverse, then rotate away.
+            # Bug-style reactive avoidance: stop, turn toward the freer side,
+            # then follow the obstacle boundary with a shallow forward arc
+            # until the front sector clears again.
+            self.turn_direction = self._pick_turn_direction()
             self.avoidance_mode = 'REVERSE'
-            self.step_deadline_ns = now_ns + int(1.4e9)
-            self.get_logger().warn('Hazard detected (obstacle/crater). Starting avoidance.')
+            self.step_deadline_ns = now_ns + int(0.9e9)
+            self.get_logger().warn(
+                f'Hazard detected (obstacle/crater). Starting Bug-style avoidance, '
+                f'turning {"left" if self.turn_direction > 0 else "right"}.'
+            )
 
         if self.avoidance_mode != 'CLEAR':
             self.obs_pub.publish(Bool(data=True))
             twist = Twist()
 
             if self.avoidance_mode == 'REVERSE':
-                twist.linear.x = -0.2
+                twist.linear.x = -0.18
                 twist.angular.z = 0.0
                 if now_ns >= self.step_deadline_ns:
                     self.avoidance_mode = 'TURN'
@@ -87,8 +107,27 @@ class ObstacleAvoidance(Node):
 
             elif self.avoidance_mode == 'TURN':
                 twist.linear.x = 0.0
-                twist.angular.z = 0.65
-                if now_ns >= self.step_deadline_ns and not hazard:
+                twist.angular.z = 0.75 * self.turn_direction
+                side_sector = 70.0 if self.turn_direction > 0 else -70.0
+                side_clear = self._sector_min(side_sector, 24.0) > 0.95
+                front_clear = self._sector_min(0.0, 20.0) > 1.35
+                if now_ns >= self.step_deadline_ns and (front_clear or side_clear):
+                    self.avoidance_mode = 'FOLLOW_EDGE'
+                    self.step_deadline_ns = now_ns + int(2.4e9)
+
+            elif self.avoidance_mode == 'FOLLOW_EDGE':
+                twist.linear.x = 0.18
+                twist.angular.z = -0.28 * self.turn_direction
+
+                front_clear = self._sector_min(0.0, 18.0) > 1.45
+                flank_too_close = self._sector_min(
+                    80.0 if self.turn_direction > 0 else -80.0,
+                    18.0,
+                ) < 0.55
+                if flank_too_close:
+                    twist.angular.z = 0.18 * self.turn_direction
+
+                if now_ns >= self.step_deadline_ns and front_clear:
                     self.avoidance_mode = 'CLEAR'
 
             self.cmd_pub.publish(twist)

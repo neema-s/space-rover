@@ -1,0 +1,31 @@
+1776662309.3535011 [INFO] [launch]: All log files can be found below /home/pes2ug23cs383/mar_project/space-rover/.ros_logs/2026-04-20-10-48-29-345941-pes2ug23cs383-50820
+1776662309.3541141 [INFO] [launch]: Default logging verbosity is set to INFO
+1776662309.5297880 [INFO] [gazebo-1]: process started with pid [50821]
+1776662309.5302608 [INFO] [robot_state_publisher-2]: process started with pid [50823]
+1776662309.5306840 [INFO] [spawn_entity.py-3]: process started with pid [50825]
+1776662309.7721269 [robot_state_publisher-2] [WARN] [1776662309.767978494] [kdl_parser]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+1776662309.7746937 [robot_state_publisher-2] [INFO] [1776662309.772686252] [robot_state_publisher]: got segment base_link
+1776662309.7748222 [robot_state_publisher-2] [INFO] [1776662309.772775501] [robot_state_publisher]: got segment camera_link
+1776662309.7748771 [robot_state_publisher-2] [INFO] [1776662309.772785851] [robot_state_publisher]: got segment front_left_wheel
+1776662309.7749238 [robot_state_publisher-2] [INFO] [1776662309.772792083] [robot_state_publisher]: got segment front_right_wheel
+1776662309.7749662 [robot_state_publisher-2] [INFO] [1776662309.772797563] [robot_state_publisher]: got segment left_arm
+1776662309.7750046 [robot_state_publisher-2] [INFO] [1776662309.772803164] [robot_state_publisher]: got segment lidar_link
+1776662309.7750416 [robot_state_publisher-2] [INFO] [1776662309.772808504] [robot_state_publisher]: got segment mast_link
+1776662309.7946420 [robot_state_publisher-2] [INFO] [1776662309.772813634] [robot_state_publisher]: got segment mid_left_wheel
+1776662309.7953548 [robot_state_publisher-2] [INFO] [1776662309.775535792] [robot_state_publisher]: got segment mid_right_wheel
+1776662309.7954233 [robot_state_publisher-2] [INFO] [1776662309.775544398] [robot_state_publisher]: got segment rear_left_wheel
+1776662309.7954717 [robot_state_publisher-2] [INFO] [1776662309.775550159] [robot_state_publisher]: got segment rear_right_wheel
+1776662309.7955146 [robot_state_publisher-2] [INFO] [1776662309.775555709] [robot_state_publisher]: got segment solar_panel
+1776662318.5625393 [INFO] [spawn_entity.py-3]: process has finished cleanly [pid 50825]
+1776662321.1186597 [INFO] [lidar_node-4]: process started with pid [50944]
+1776662321.1189570 [INFO] [camera_node-5]: process started with pid [50946]
+1776662321.1190431 [INFO] [imu_node-6]: process started with pid [50948]
+1776662321.1191137 [INFO] [estop_node-7]: process started with pid [50951]
+1776662321.1191840 [INFO] [nav_node-8]: process started with pid [50954]
+1776662321.1192701 [INFO] [obstacle_avoidance-9]: process started with pid [50956]
+1776662321.1193612 [INFO] [watchdog_node-10]: process started with pid [50958]
+1776662321.1194634 [INFO] [terrain_classifier-11]: process started with pid [50960]
+1776662321.1195374 [INFO] [rover_status-12]: process started with pid [50962]
+1776662321.1196029 [INFO] [mission_logger-13]: process started with pid [50965]
+1776662321.1196649 [INFO] [dashboard-14]: process started with pid [50968]
+1776662321.1197443 [INFO] [estop_widget-15]: process started with pid [50970]

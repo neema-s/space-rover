@@ -1,0 +1,7 @@
+[INFO] [1776662311.029129399] [spawn_entity]: Spawn Entity started
+[INFO] [1776662311.030256199] [spawn_entity]: Loading entity XML from file /tmp/tmpw0bg0mkn.urdf
+[INFO] [1776662311.033309515] [spawn_entity]: Waiting for service /spawn_entity, timeout = 180
+[INFO] [1776662311.033863697] [spawn_entity]: Waiting for service /spawn_entity
+[INFO] [1776662316.671167525] [spawn_entity]: Calling service /spawn_entity
+[INFO] [1776662318.060560552] [spawn_entity]: Spawn status: SpawnEntity: Successfully spawned entity [rover]
+[INFO] [1776662318.105987029] [spawn_entity]: Calling service /unpause_physics

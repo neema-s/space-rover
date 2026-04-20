@@ -26,6 +26,7 @@ class DashboardState:
     camera_frame: object = None
     scan: object = None
     goal_pose: object = None
+    speed_mps: float = 0.0
     waypoint_index: int = 0
     waypoint_total: int = 3
     last_camera_time: float = 0.0
@@ -75,7 +76,10 @@ class DashboardNode(Node):
         self.state.terrain_type = msg.data
 
     def odom_callback(self, msg):
-        _ = msg
+        linear = msg.twist.twist.linear
+        self.state.speed_mps = math.sqrt(
+            linear.x * linear.x + linear.y * linear.y + linear.z * linear.z
+        )
 
     def goal_callback(self, msg):
         self.state.goal_pose = msg
@@ -135,8 +139,8 @@ class RoverDashboardApp:
         }
 
         self.current_photo = None
-        self.battery_level = 100.0
-        self.last_battery_update = time.monotonic()
+        self.last_log_snapshot = {}
+        self.event_history = ['Dashboard ready. Use the controls or SPACE for emergency stop.']
         self._build_ui()
         self._bind_keys()
         self.root.after(80, self.refresh_ui)
@@ -234,7 +238,7 @@ class RoverDashboardApp:
         self.status_value = self._status_row(status_frame, 'Rover status')
         self.terrain_value = self._status_row(status_frame, 'Terrain type')
         self.estop_value = self._status_row(status_frame, 'E-Stop')
-        self.battery_value = self._status_row(status_frame, 'Battery')
+        self.speed_value = self._status_row(status_frame, 'Speed')
         self.timer_value = self._status_row(status_frame, 'Mission timer')
         self.waypoint_value = self._status_row(status_frame, 'Waypoint')
         self.goal_value = self._status_row(status_frame, 'Goal pose')
@@ -269,10 +273,19 @@ class RoverDashboardApp:
         self._button(actions, 'EMERGENCY STOP', lambda: self.publish_estop(True), bg=self.theme['bad']).pack(fill='x', pady=(0, 6))
         self._button(actions, 'RESUME', lambda: self.publish_estop(False), bg=self.theme['good']).pack(fill='x')
 
-        self.mission_box = tk.Text(state.content, height=18, bg=self.theme['panel_alt'], fg=self.theme['text'], insertbackground=self.theme['text'], relief='flat', wrap='word')
+        self.mission_text = tk.StringVar(value='Waiting for rover telemetry...')
+        self.mission_box = tk.Label(
+            state.content,
+            textvariable=self.mission_text,
+            bg=self.theme['panel_alt'],
+            fg=self.theme['text'],
+            justify='left',
+            anchor='nw',
+            wraplength=420,
+            padx=12,
+            pady=12,
+        )
         self.mission_box.pack(fill='both', expand=True, padx=12, pady=12)
-        self.mission_box.insert('end', 'Dashboard ready. Use the controls or SPACE for emergency stop.\n')
-        self.mission_box.configure(state='disabled')
 
     def _bind_keys(self):
         self.root.bind('<space>', lambda event: self.publish_estop(True))
@@ -297,10 +310,17 @@ class RoverDashboardApp:
         self.append_log('Emergency stop triggered.' if active else 'Emergency stop cleared.')
 
     def append_log(self, message):
-        self.mission_box.configure(state='normal')
-        self.mission_box.insert('end', f'[{datetime.now().strftime("%H:%M:%S")}] {message}\n')
-        self.mission_box.see('end')
-        self.mission_box.configure(state='disabled')
+        self.event_history.append(f'[{datetime.now().strftime("%H:%M:%S")}] {message}')
+        self.event_history = self.event_history[-8:]
+
+    def _render_mission_box(self):
+        mission_lines = [
+            self._format_mission_state(),
+            '',
+            'Recent events:',
+            *self.event_history,
+        ]
+        self.mission_text.set('\n'.join(mission_lines))
 
     def _update_camera(self):
         frame = self.node.state.camera_frame
@@ -309,8 +329,7 @@ class RoverDashboardApp:
 
         try:
             preview = cv2.resize(frame, (640, 360))
-            rgb = cv2.cvtColor(preview, cv2.COLOR_BGR2RGB)
-            success, buffer = cv2.imencode('.png', rgb)
+            success, buffer = cv2.imencode('.png', preview)
             if success:
                 encoded = base64.b64encode(buffer.tobytes()).decode('ascii')
                 self.current_photo = tk.PhotoImage(data=encoded, format='PNG')
@@ -365,31 +384,66 @@ class RoverDashboardApp:
             msg = 'Nearest obstacle: none in range'
         self.scan_canvas.create_text(10, 10, text=msg, fill=self.theme['text'], anchor='nw', font=('TkDefaultFont', 10, 'bold'))
 
-    def _battery_drain(self):
-        now = time.monotonic()
-        elapsed = now - self.last_battery_update
-        self.last_battery_update = now
-        active = self.node.state.rover_status in {'MOVING', 'RECOVERY'}
-        if active:
-            self.battery_level = max(0.0, self.battery_level - elapsed * 1.1)
+    def _format_mission_state(self):
+        scan = self.node.state.scan
+        nearest = 'waiting for /scan'
+        if scan is not None:
+            finite_ranges = [r for r in scan.ranges if math.isfinite(r)]
+            if finite_ranges:
+                nearest = f'{min(finite_ranges):0.2f} m'
+            else:
+                nearest = 'clear'
+
+        goal = self.node.state.goal_pose
+        if goal is None:
+            goal_text = 'No active waypoint'
         else:
-            self.battery_level = max(0.0, self.battery_level - elapsed * 0.2)
+            goal_text = f'Waypoint target: ({goal.pose.position.x:0.1f}, {goal.pose.position.y:0.1f})'
+
+        return (
+            f'State: {self.node.state.rover_status}\n'
+            f'Terrain: {self.node.state.terrain_type}\n'
+            f'Speed: {self.node.state.speed_mps:0.2f} m/s\n'
+            f'LIDAR: nearest obstacle {nearest}. The plot is a top-down ring around the rover.\n'
+            f'{goal_text}\n'
+            f'E-Stop: {"ACTIVE" if self.node.state.estop_active else "CLEAR"}'
+        )
+
+    def _log_state_changes(self):
+        snapshot = {
+            'status': self.node.state.rover_status,
+            'terrain': self.node.state.terrain_type,
+            'estop': self.node.state.estop_active,
+            'goal': None if self.node.state.goal_pose is None else (
+                round(self.node.state.goal_pose.pose.position.x, 1),
+                round(self.node.state.goal_pose.pose.position.y, 1),
+            ),
+        }
+        if snapshot == self.last_log_snapshot:
+            return
+
+        self.last_log_snapshot = snapshot
+        self.append_log(
+            f'Status={snapshot["status"]}, terrain={snapshot["terrain"]}, '
+            f'estop={"ON" if snapshot["estop"] else "OFF"}'
+        )
 
     def refresh_ui(self):
         self.clock_label.configure(text=datetime.now().strftime('%d %b %Y  %H:%M:%S'))
         self.status_value.configure(text=self.node.state.rover_status, fg=self._status_color(self.node.state.rover_status))
         self.terrain_value.configure(text=self.node.state.terrain_type, fg=self._terrain_color(self.node.state.terrain_type))
         self.estop_value.configure(text='ACTIVE' if self.node.state.estop_active else 'CLEAR', fg=self.theme['bad'] if self.node.state.estop_active else self.theme['good'])
-        self._battery_drain()
-        self.battery_value.configure(text=f'{self.battery_level:0.0f}%')
+        self.speed_value.configure(text=f'{self.node.state.speed_mps:0.2f} m/s')
         self.timer_value.configure(text=f'{time.monotonic() - self.node.mission_start:0.1f}s')
         self.waypoint_value.configure(text=f'{self.node.state.waypoint_index} / {self.node.state.waypoint_total}')
 
         goal = self.node.state.goal_pose
         self.goal_value.configure(text='--' if goal is None else f'({goal.pose.position.x:0.1f}, {goal.pose.position.y:0.1f})')
+        self._render_mission_box()
 
         self._update_camera()
         self._update_scan()
+        self._log_state_changes()
         self.root.after(120, self.refresh_ui)
 
     def _status_color(self, status):

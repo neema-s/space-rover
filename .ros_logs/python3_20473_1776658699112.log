@@ -1,0 +1,2 @@
+[INFO] [1776658700.593160249] [camera_node]: Camera Node Started (publishing /camera/image_raw)
+[INFO] [1776658707.065703578] [camera_node]: Camera update #1: 640x480

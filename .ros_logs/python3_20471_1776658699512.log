@@ -1,0 +1,6 @@
+[INFO] [1776658700.613067022] [lidar_node]: LIDAR Node Started (listening on /gazebo_ros_lidar/out, publishing /scan)
+[INFO] [1776658700.917283595] [lidar_node]: LIDAR update #1: ranges=360, first_range=inf
+[INFO] [1776658711.730487078] [lidar_node]: LIDAR update #20: ranges=360, first_range=inf
+[INFO] [1776658720.762956943] [lidar_node]: LIDAR update #40: ranges=360, first_range=inf
+[INFO] [1776658728.032253266] [lidar_node]: LIDAR update #60: ranges=360, first_range=inf
+[INFO] [1776658734.967988210] [lidar_node]: LIDAR update #80: ranges=360, first_range=inf

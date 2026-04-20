@@ -43,7 +43,7 @@
   <link name="mast_link">
     <visual>
       <geometry>
-        <cylinder radius="0.03" length="0.4"/>
+        <cylinder radius="0.022" length="0.16"/>
       </geometry>
       <material name="light_gray"/>
     </visual>
@@ -52,7 +52,7 @@
   <joint name="mast_joint" type="fixed">
     <parent link="base_link"/>
     <child link="mast_link"/>
-    <origin xyz="0.2 0 0.3"/>
+    <origin xyz="0.16 0 0.14"/>
   </joint>
 
   <!-- ================= CAMERA ================= -->
@@ -79,7 +79,7 @@
   <joint name="camera_joint" type="fixed">
     <parent link="mast_link"/>
     <child link="camera_link"/>
-    <origin xyz="0 0 0.18"/>
+    <origin xyz="0.18 0 0.02" rpy="0 0.14 0"/>
   </joint>
 
   <!-- ================= LIDAR ================= -->
@@ -106,7 +106,7 @@
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="0 0 0.18"/>
+    <origin xyz="0.18 0 0.035"/>
   </joint>
 
   <!-- ================= ARM ================= -->

@@ -1,0 +1,19 @@
+[INFO] [1776660940.277978491] [camera_node]: Camera Node Started (publishing /camera/image_raw)
+[INFO] [1776660947.308073918] [camera_node]: Camera update #1: 640x480
+[INFO] [1776661023.175487102] [camera_node]: Camera update #30: 640x480
+[INFO] [1776661422.704875007] [camera_node]: Camera update #60: 640x480
+[INFO] [1776661568.430492018] [camera_node]: Camera update #90: 640x480
+[INFO] [1776661685.685378416] [camera_node]: Camera update #120: 640x480
+[INFO] [1776661821.582325674] [camera_node]: Camera update #150: 640x480
+[INFO] [1776661915.671482443] [camera_node]: Camera update #180: 640x480
+[INFO] [1776661988.686503077] [camera_node]: Camera update #210: 640x480
+[INFO] [1776662069.343580362] [camera_node]: Camera update #240: 640x480
+[INFO] [1776662154.659131082] [camera_node]: Camera update #270: 640x480
+[INFO] [1776662232.400025972] [camera_node]: Camera update #300: 640x480
+[INFO] [1776662376.248581276] [camera_node]: Camera update #330: 640x480
+[INFO] [1776662494.220477593] [camera_node]: Camera update #360: 640x480
+[INFO] [1776662581.755081614] [camera_node]: Camera update #390: 640x480
+[INFO] [1776662652.366636707] [camera_node]: Camera update #420: 640x480
+[INFO] [1776662725.871150926] [camera_node]: Camera update #450: 640x480
+[INFO] [1776662858.840169418] [camera_node]: Camera update #480: 640x480
+[INFO] [1776662939.542640929] [camera_node]: Camera update #510: 640x480

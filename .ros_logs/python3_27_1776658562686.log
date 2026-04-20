@@ -1,0 +1,4 @@
+[INFO] [1776658563.076425237] [spawn_entity]: Spawn Entity started
+[INFO] [1776658563.084467400] [spawn_entity]: Loading entity XML from file /tmp/tmpydp503_p.urdf
+[INFO] [1776658563.091761979] [spawn_entity]: Waiting for service /spawn_entity, timeout = 180
+[INFO] [1776658563.092218255] [spawn_entity]: Waiting for service /spawn_entity
