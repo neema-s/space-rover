@@ -145,7 +145,7 @@ def generate_launch_description():
             description='Namespace to apply to all nodes (avoid duplicate node names)'
         ),
 
-        # 🌍 Launch Gazebo (server + client) with required ROS plugins.
+        # Launch Gazebo (server + client) with required ROS plugins.
         ExecuteProcess(
             cmd=[
                 'gazebo',
@@ -157,7 +157,7 @@ def generate_launch_description():
             output='screen'
         ),
 
-        # 🤖 Robot state publisher
+        # Robot state publisher
         Node(
             package="robot_state_publisher",
             executable="robot_state_publisher",
